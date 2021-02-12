@@ -1,0 +1,116 @@
+<Window>
+    <Image 
+        Margin="5"
+        Source="./images/service_logo.png" 
+        VerticalAlignment="Top"/>
+
+    <StackPanel 
+        Orientation="Vertical"
+        Margin="5"
+        VerticalAlignment="Bottom">
+
+        <Button
+            Content="Кнопка отображается только в режиме администратора"
+            Visibility="{Binding AdminVisibility}"
+            Click="Button_Click"/>
+
+
+        <Label Content="Цена: "
+            VerticalAlignment="Center"/>
+
+        <RadioButton 
+            GroupName="Price"
+            Tag="1"
+            Content="по возрастанию" 
+            IsChecked="True" 
+            Checked="RadioButton_Checked"
+            VerticalContentAlignment="Center"/>
+
+        <ComboBox
+            Name="DiscountFilterComboBox"
+            SelectedIndex="0"
+            SelectionChanged="DiscountFilterComboBox_SelectionChanged"
+            ItemsSource="{Binding FilterByDiscountNamesList}"/>
+
+        <TextBox
+            x:Name="SearchTextBox"
+            KeyUp="SearchTextBox_KeyUp"
+            Width="200"/>
+
+    </StackPanel>
+
+    <DataGrid
+        x:Name="MainDataGrid"
+        Grid.Row="1"
+        CanUserAddRows="false"
+        CanUserSortColumns="False"
+        AutoGenerateColumns="False"
+        ItemsSource="{Binding ServiceList}">
+
+        <DataGrid.RowStyle>
+            <Style TargetType="DataGridRow">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding HasDiscount}" Value="True">
+                        <Setter Property="Background" Value="LightGreen"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </DataGrid.RowStyle>
+
+        <DataGrid.Columns>
+            <DataGridTextColumn
+                Width="250"
+                Header="Наименование услуги"
+                Binding="{Binding Title}"/>
+
+            <DataGridTemplateColumn 
+                Width="100"
+                Header="Стоимость">
+
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBlock 
+                            TextDecorations="{Binding CostTextDecoration}"
+                            Text="{Binding CostString}"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+            <DataGridTemplateColumn 
+                Width="64"
+                Header="">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <Image 
+                            Height="64" 
+                            Width="64" 
+                            Source="{Binding ImageUri}" />
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+            <DataGridTemplateColumn
+                Header="Действия">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <StackPanel 
+                            Visibility="{Binding DataContext.AdminVisibility, ElementName=Root}"
+                            Orientation="Horizontal">
+                            <Button 
+                                    Content="Редактировать" 
+                                    Name="EditButton" 
+                                    Click="EditButton_Click"/>
+                            <Button 
+                                    Content="Удалить" 
+                                    Name="DeleteButton" 
+                                    Click="DeleteButton_Click"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+
+        </DataGrid.Columns>
+
+    </DataGrid>
+</Window>
