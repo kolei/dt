@@ -70,12 +70,22 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         Tuple.Create("от 70% до 100%", 0.7f, 1f)
     };
 
+    /// <summary>
+    /// Геттер, возвращающий названия скидок для выпадающего списка
+    /// </summary>
+    /// <returns>
+    /// List<string> - список строк
+    /// </returns>
     public List<string> FilterByDiscountNamesList {
         get {
             return FilterByDiscountValuesList.Select(item => item.Item1).ToList();
         }
     }
 
+
+    /// <summary>
+    /// Заставляет перерисовать все перечисленные элементы
+    /// </summary>
     private void InvalidateWindow(){
         if (PropertyChanged != null)
         {
